@@ -64,7 +64,7 @@ namespace AdoTest
                 string nome = reader.GetString(0);
                 string cor = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
 
-                listBox1.Items.Add($"{reader.GetInt32(2)}, {nome} {cor}");
+                listBox1.Items.Add($"{reader.GetInt32(2)}, {nome}, {cor}");
             }
 
             sqlCon.Close();
@@ -76,7 +76,19 @@ namespace AdoTest
             mySqlCon.ConnectionString = "Server=127.0.0.1;Port=3306;Database=Cliente01;Uid=root;Pwd=zaqmko21@;";
             mySqlCon.Open();
 
-            MessageBox.Show("Open Mysql Connection");
+            MySqlCommand mySqlCommand = new MySqlCommand();
+            mySqlCommand.CommandType = System.Data.CommandType.Text;
+            mySqlCommand.CommandText = "select * from Produtos";
+            mySqlCommand.Connection = mySqlCon;
+
+            MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+            while (mySqlDataReader.Read())
+            {
+                string nome = mySqlDataReader.GetString(1);
+                string cor = mySqlDataReader.IsDBNull(2) ? String.Empty : mySqlDataReader.GetString(2);
+
+                listBox2.Items.Add($"{mySqlDataReader.GetInt32(0)}, {nome}, {cor}");
+            }
 
             mySqlCon.Close();
         }
