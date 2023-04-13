@@ -37,5 +37,48 @@ namespace AdoTest
 
             mySqlCon.Close();
         }
+
+
+
+        private void sqlList_Click(object sender, EventArgs e)
+        {
+            SqlConnection sqlCon = new SqlConnection();
+
+            string connection = "Data Source=localhost;Initial Catalog=Cliente01;User ID=sa;Password=zaqmko21@;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+            sqlCon.ConnectionString = connection;
+
+            sqlCon.Open();
+
+            SqlCommand sqlCommand = new SqlCommand();
+
+            sqlCommand.CommandType = System.Data.CommandType.Text;
+            sqlCommand.CommandText = "select * from Produtos";
+            sqlCommand.Connection = sqlCon;
+
+
+
+
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                string nome = reader.GetString(0);
+                string cor = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+
+                listBox1.Items.Add($"{reader.GetInt32(2)}, {nome} {cor}");
+            }
+
+            sqlCon.Close();
+        }
+
+        private void mySqlList_Click(object sender, EventArgs e)
+        {
+            MySqlConnection mySqlCon = new MySqlConnection();
+            mySqlCon.ConnectionString = "Server=127.0.0.1;Port=3306;Database=Cliente01;Uid=root;Pwd=zaqmko21@;";
+            mySqlCon.Open();
+
+            MessageBox.Show("Open Mysql Connection");
+
+            mySqlCon.Close();
+        }
     }
 }
